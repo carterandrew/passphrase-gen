@@ -108,3 +108,5 @@ No specific requirements.
     $ ./randstr.py -x 64
     2774ab418d2d1f9d39ca7310364e12d333b7c579b587c86a18cfdae0baf154d6
   
+## Testing
+Tests require nose. Execution is simply `nosetests`.
