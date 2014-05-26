@@ -8,7 +8,7 @@ Simple passphrase and password generators for the terminal.
 Passphrase-gen is released under the terms of the MIT license.
 
 ## Requirements
-These scripts shoul work on linux in python 2.7+ or 3.X.
+These scripts should work on linux in python 2.7+ or 3.X.
 #### passphrase.py
 A word list with one word per line is required. By default, /usr/share/dict is used as the word list. You can specify a different location with '-s'.
 
@@ -17,10 +17,9 @@ No specific requirements.
 
 ## Usage
 #### passphrase.py
-    $ ./passphrase.py --help
-    usage: ./passphrase.py [-h] [-m MINWORDLEN] [-M MAXWORDLEN] [-w WORDLIST]
-                    [-s SEPARATOR] [-l | -u | -c]
-                    [length]
+    usage: passphrase.py [-h] [-m MINWORDLEN] [-M MAXWORDLEN] [-n NUMPHRASES]
+                         [-w WORDLIST] [-s SEPARATOR] [-l | -u | -c]
+                         [length]
 
     Basic dictionary word passphrase generator
 
@@ -33,6 +32,8 @@ No specific requirements.
                             Minimum word length
       -M MAXWORDLEN, --maxwordlen MAXWORDLEN
                             Maximum word length
+      -n NUMPHRASES, --numphrases NUMPHRASES
+                            Number of phrases to display
       -w WORDLIST, --wordlist WORDLIST
                             Path to wordlist
       -s SEPARATOR, --separator SEPARATOR
@@ -41,8 +42,8 @@ No specific requirements.
       -u, --upper           Uppercase
       -c, --capitalize      Capitalize
 
+
 #### randstr.py
-    $ ./randstr.py --help
     usage: randstr.py [-h] [-d] [-a] [-x] [-s] [-l | -u] [length]
 
     Simple command-line note taking app
@@ -59,6 +60,7 @@ No specific requirements.
       -l, --lower    Lowercase
       -u, --upper    Uppercase
 
+
 ## Examples
 ###### Generate a six-word passphrase
     $ ./passphrase.py 6
@@ -71,6 +73,22 @@ No specific requirements.
     Using word list at: /usr/share/dict/words
     Total available words: 86382
     'collar.mandrel.uncleaner.sambaing'
+
+###### Generate 10 passphrases with the default parameters
+    $ ./passphrase.py -n 10
+    Using word list at: /usr/share/dict/words
+    Supplied min/max word length parameters may reduce the sample space.
+    Final dictionary contains 86187 words
+    'windlasses atoll acuity disseminate'
+    'brett blintz wantonness eastward'
+    'eaters controversial cashmere gamuts'
+    'khmer rebidding denudes stephen'
+    'afghanistan helpless anacin vivian'
+    'authoritarianism ransoming gnostic spinal'
+    'contd protest wallboard whittles'
+    'biographer blowhard sheepishly nonalignment'
+    'powerboats personage subtraction banning'
+    'maintained proprietresses srinagar freeloading'
 
 ###### Specify a different wordlist
     $ ./passphrase.py -w "/usr/share/dict/cracklib-small"

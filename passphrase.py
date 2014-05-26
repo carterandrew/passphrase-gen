@@ -13,68 +13,59 @@ import os
 import sys
 import argparse
 import re
-from io import open
+import passLib
 
-def_length = 4
-min_word_len = 4
-max_word_len = None
-word_sep = ' '
+DEFAULT_NUM_WORDS = 4
+DEFAULT_WORDLIST_PATH = '/usr/share/dict/words'
+minWordLen = 4
+maxWordLen = None
+wordSep = ' '
 words = []
-rand_s = ''
-wordList = '/usr/share/dict/words'
+randStr = ''
+wordListPath = DEFAULT_WORDLIST_PATH
+numPhrases = 1
 
 # Setup the program arguments
 parser = argparse.ArgumentParser(description="Basic dictionary word passphrase generator")
 group = parser.add_mutually_exclusive_group(required=False)
-parser.add_argument("-m", "--minwordlen", help="Minimum word length")
-parser.add_argument("-M", "--maxwordlen", help="Maximum word length")
+parser.add_argument("-m", "--minwordlen", type=int, help="Minimum word length")
+parser.add_argument("-M", "--maxwordlen", type=int, help="Maximum word length")
+parser.add_argument("-n", "--numphrases", type=int, help="Number of phrases to display")
 parser.add_argument("-w", "--wordlist", help="Path to wordlist")
 parser.add_argument("-s", "--separator", help="Word separator")
 group.add_argument("-l", "--lower", action="store_true", help="Lowercase")
 group.add_argument("-u", "--upper", action="store_true", help="Uppercase")
 group.add_argument("-c", "--capitalize", action="store_true", help="Capitalize")
-parser.add_argument("length", type=int, nargs='?', default=def_length, help="Number of words")
+parser.add_argument("length", type=int, nargs='?', default=DEFAULT_NUM_WORDS, help="Number of words")
 args = parser.parse_args()
 
-# Deal with supplied arguments
-num_words = args.length
+# Handle supplied arguments
+numWords = args.length
 if (args.wordlist is not None):
-  wordList = args.wordlist
+  wordListPath = args.wordlist
 if (args.minwordlen is not None):
-  min_word_len = int(args.minwordlen)
+  minWordLen = int(args.minwordlen)
+if (args.numphrases is not None):
+  numPhrases = int(args.numphrases)
 if (args.maxwordlen is not None):
-  max_word_len = int(args.maxwordlen)
+  maxWordLen = int(args.maxwordlen)
 if (args.separator is not None):
-  word_sep = args.separator
+  wordSep = args.separator
 
-# Load the word list
-print("Using word list at: "+wordList)
-with open(wordList, "r", encoding='utf-8') as f:
-  for word in f:
-    word = word.strip()
-    wl = len(word)
-    if (re.search(r'\'',word) or wl < min_word_len or (max_word_len is not None and wl > max_word_len)):
-      continue
-    words.append(word)
+words = passLib.load_word_list(wordListPath, minWordLen, maxWordLen)
+if (len(words) < numWords):
+    print("Less than %d words present in dictionary. Perhaps the supplied parameters were too restrictive?" % numWords)
+    exit(1)
+randStrs = []
+for i in range(0, numPhrases):
+  wordsSelected = passLib.get_n_words(words, numWords)
 
-# Bail if there aren't any words to choose from
-print("Total available words: "+str(len(words)))
-if (len(words) == 0):
-  print("No words were found. Perhaps the supplied parameters were too restrictive?")
-  exit(1)
+  # Bail if there aren't any words to choose from based on word length requirements
+  if (wordsSelected is None or len(wordsSelected) < numWords):
+    print("Less than %d words were found. Perhaps the supplied parameters were too restrictive?" % numWords)
+    exit(1)
 
-# Build the string of words
-for i in range(0,num_words):
-  word = random.SystemRandom().choice(words)
-  if (args.upper):
-    word = word.upper()
-  elif (args.capitalize):
-    word = word.capitalize()
-  else:
-    word = word.lower()
+  # Build the string of words
+  randStrs.append(passLib.build_word_string(wordsSelected, wordSep, args.upper, args.capitalize))
 
-  if (i > 0):
-    rand_s += word_sep
-  rand_s += word
-
-print("'"+rand_s+"'")
+passLib.display_phrases(randStrs)
