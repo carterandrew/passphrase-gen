@@ -50,15 +50,17 @@ def get_passphrase(chars, passLength):
   return rand_s
 
 # Load the word list from the specified path
-def load_word_list(wordListPath, minWordLen=0, maxWordLen=None):
-  if (wordListPath is None or wordListPath == ''):
+def load_word_list(wordListPath, minWordLen=None, maxWordLen=None):
+  if minWordLen is None:
+    minWordLen = 0
+  if maxWordLen is None:
+    maxWordLen = 0
+  if not wordListPath:
     return None
-  if (minWordLen < 0 or (maxWordLen is not None and maxWordLen < 0)):
-      return None
-  elif (maxWordLen is not None and maxWordLen < minWordLen):
+  if minWordLen < 0 or maxWordLen < 0 or maxWordLen < minWordLen:
       return None
   print("Using word list at: "+wordListPath)
-  if (minWordLen > 0 or maxWordLen is not None):
+  if minWordLen or maxWordLen:
     print("Supplied min/max word length parameters may reduce the sample space.")
   words = []
   try:
@@ -66,12 +68,12 @@ def load_word_list(wordListPath, minWordLen=0, maxWordLen=None):
       for word in f:
         word = word.strip()
         # skip words with apostrophe's
-        if (not re.match(r'^[a-zA-Z]+$',word)):
+        if (not re.match(r'^[a-zA-Z]+$', word)):
           continue
         wl = len(word)
-        if (minWordLen > 0 and wl < minWordLen):
+        if wl < minWordLen:
             continue
-        elif (maxWordLen is not None and wl > maxWordLen):
+        elif maxWordLen and wl > maxWordLen:
             continue
         words.append(word)
   except IOError as e:
