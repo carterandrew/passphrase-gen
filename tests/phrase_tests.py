@@ -4,6 +4,7 @@ import passLib
 from nose.tools import assert_equals
 import random
 
+#wordsDefault = ['a','bb','ccc','dddd','eeeee','ffffff','ggggggg','hhhhhhhh','iiiiiiiii','jjjjjjjjjj','kkkkkkkkkkk']
 testDict = 'tests/testDict.txt'
 randStr = ''
 
@@ -63,12 +64,15 @@ def test_word_min_and_max_equal():
   words = passLib.load_word_list(testDict, 2, 2)
   assert_equals(passLib.get_word(words), 'bb')
 
+def test_word_max_len_zero():
+  assert_equals(passLib.load_word_list(testDict, 0, 0), [])
+
 
 ####################################
 # Getting n words
 ####################################
 def test_n_words_zero():
-  words = passLib.load_word_list(testDict, 99, 0)
+  words = passLib.load_word_list(testDict, None, 0)
   assert_equals(passLib.get_n_words(words, 1), None)
 
 def test_n_words_single():
