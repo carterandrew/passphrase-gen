@@ -1,6 +1,8 @@
 passphrase-gen
 ==
 
+[![Build Status](https://travis-ci.org/carterandrew/passphrase-gen.svg?branch=master)](https://travis-ci.org/carterandrew/passphrase-gen)
+
 Simple passphrase and password generators for the terminal.
 
 ## License
