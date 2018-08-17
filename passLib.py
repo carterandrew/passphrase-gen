@@ -3,6 +3,8 @@ import random
 import string
 from io import open
 
+MAX_WORD_LEN = 100
+
 digit_chars 	= list(string.digits)
 alpha_lower 	= list(string.ascii_lowercase)
 alpha_upper 	= list(string.ascii_uppercase)
@@ -54,13 +56,13 @@ def load_word_list(wordListPath, minWordLen=None, maxWordLen=None):
   if minWordLen is None:
     minWordLen = 0
   if maxWordLen is None:
-    maxWordLen = 0
+    maxWordLen = MAX_WORD_LEN
   if not wordListPath:
     return None
   if minWordLen < 0 or maxWordLen < 0 or maxWordLen < minWordLen:
       return None
   print("Using word list at: "+wordListPath)
-  if minWordLen or maxWordLen:
+  if minWordLen or maxWordLen < MAX_WORD_LEN:
     print("Supplied min/max word length parameters may reduce the sample space.")
   words = []
   try:

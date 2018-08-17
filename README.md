@@ -71,10 +71,10 @@ No specific requirements.
     'directories encampment cellphone tinkers obtuseness inhibition'
 
 ###### Generate a four-word capitalized passphrase with periods as separators
-    $ ./passphrase.py -s '.' 4
+    $ ./passphrase.py -c -s '.' 4
     Using word list at: /usr/share/dict/words
     Total available words: 86382
-    'collar.mandrel.uncleaner.sambaing'
+    'Collar.Mandrel.Uncleaner.Sambaing'
 
 ###### Generate 10 passphrases with the default parameters
     $ ./passphrase.py -n 10
