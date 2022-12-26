@@ -100,9 +100,12 @@ def get_word(words, excludeWords=[]):
       return word 
   return None
 
-def display_phrases(phrases):
+def display_phrases(phrases, quote=True):
+    print()
     for p in phrases:
-        print("'%s'" % p)
+        if quote:
+            p = "'{phrase}'".format(phrase=p)
+        print(p)
 
 # returns n words from the supplied wordList
 def get_n_words(wordList, n):
